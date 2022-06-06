@@ -220,4 +220,24 @@ class TimeIntervalFrequencyEnumTest extends TestCase
             TimeIntervalFrequencyEnum::Years->value
         );
     }
+
+    public function testHumanizeDateInterval(): void
+    {
+        self::assertEquals(
+            '1 year, 3 months, 1 day, 3 hours, 20 minutes, 15 seconds',
+            TimeIntervalFrequencyEnum::humanizeDateInterval(new \DateInterval('P1Y3M1DT3H20M15S'))
+        );
+        self::assertEquals(
+            '10 days, 13 hours',
+            TimeIntervalFrequencyEnum::humanizeDateInterval(new \DateInterval('P10DT13H'))
+        );
+        self::assertEquals(
+            '2 years, 10 seconds',
+            TimeIntervalFrequencyEnum::humanizeDateInterval(new \DateInterval('P2YT10S'))
+        );
+        self::assertSame(
+            '',
+            TimeIntervalFrequencyEnum::humanizeDateInterval(new \DateInterval('P0Y'))
+        );
+    }
 }
