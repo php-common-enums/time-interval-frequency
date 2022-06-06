@@ -12,6 +12,40 @@ enum TimeIntervalFrequencyEnum : string
     case Months = 'm';
     case Years = 'y';
 
+    private static function getPlural(int $value): ?string
+    {
+        return 1 !== $value ? 's' : null;
+    }
+
+    public static function humanizeDateInterval(\DateInterval $dateInterval): string
+    {
+        $formats = [];
+        if ($dateInterval->y) {
+            $formats[] = '%y year' . self::getPlural($dateInterval->y);
+        }
+        if ($dateInterval->m) {
+            $formats[] = '%m month' . self::getPlural($dateInterval->m);
+        }
+        if ($dateInterval->d) {
+            $formats[] = '%d day' . self::getPlural($dateInterval->d);
+        }
+        if ($dateInterval->h) {
+            $formats[] = '%h hour' . self::getPlural($dateInterval->h);
+        }
+        if ($dateInterval->i) {
+            $formats[] = '%i minute' . self::getPlural($dateInterval->i);
+        }
+        if ($dateInterval->s) {
+            $formats[] = '%s second' . self::getPlural($dateInterval->s);
+        }
+        return $dateInterval->format(
+            implode(
+                ', ',
+                $formats
+            )
+        );
+    }
+
     public function getDateIntervalTemplate(): string
     {
         return match ($this) {
@@ -41,13 +75,13 @@ enum TimeIntervalFrequencyEnum : string
     public function getLabel(int $value = 0): string
     {
         return match ($this) {
-            self::Seconds => 'second' . $this->getPlural($value),
-            self::Minutes => 'minute' . $this->getPlural($value),
-            self::Hours => 'hour' . $this->getPlural($value),
-            self::Days => 'day' . $this->getPlural($value),
-            self::Weeks => 'week' . $this->getPlural($value),
-            self::Months => 'month' . $this->getPlural($value),
-            self::Years => 'year' . $this->getPlural($value),
+            self::Seconds => 'second' . self::getPlural($value),
+            self::Minutes => 'minute' . self::getPlural($value),
+            self::Hours => 'hour' . self::getPlural($value),
+            self::Days => 'day' . self::getPlural($value),
+            self::Weeks => 'week' . self::getPlural($value),
+            self::Months => 'month' . self::getPlural($value),
+            self::Years => 'year' . self::getPlural($value),
         };
     }
 
@@ -75,10 +109,5 @@ enum TimeIntervalFrequencyEnum : string
             self::Months => self::Weeks,
             self::Years => self::Months,
         };
-    }
-
-    private function getPlural(int $value): ?string
-    {
-        return 1 !== $value ? 's' : null;
     }
 }
