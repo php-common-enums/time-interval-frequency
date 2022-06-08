@@ -13,12 +13,12 @@ enum TimeIntervalFrequencyEnum : string
     case Years = 'y';
 
     public static function createDateInterval(
-        int $years = 0,
-        int $months = 0,
-        int $days = 0,
-        int $hours = 0,
-        int $minutes = 0,
-        int $seconds = 0
+        ?int $years = null,
+        ?int $months = null,
+        ?int $days = null,
+        ?int $hours = null,
+        ?int $minutes = null,
+        ?int $seconds = null
     ): \DateInterval {
         $dateString = '';
         if ($years) {
