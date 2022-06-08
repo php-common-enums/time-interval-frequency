@@ -12,6 +12,58 @@ enum TimeIntervalFrequencyEnum : string
     case Months = 'm';
     case Years = 'y';
 
+    public static function createDateInterval(
+        int $years = 0,
+        int $months = 0,
+        int $days = 0,
+        int $hours = 0,
+        int $minutes = 0,
+        int $seconds = 0
+    ): \DateInterval {
+        $dateString = '';
+        if ($years) {
+            $dateString .= sprintf(
+                '%dY',
+                $years
+            );
+        }
+        if ($months) {
+            $dateString .= sprintf(
+                '%dM',
+                $months
+            );
+        }
+        if ($days) {
+            $dateString .= sprintf(
+                '%dD',
+                $days
+            );
+        }
+        $timeString = '';
+        if ($hours) {
+            $timeString .= sprintf(
+                '%dH',
+                $hours
+            );
+        }
+        if ($minutes) {
+            $timeString .= sprintf(
+                '%dM',
+                $minutes
+            );
+        }
+        if ($seconds) {
+            $timeString .= sprintf(
+                '%dS',
+                $seconds
+            );
+        }
+        if (!$dateString && !$timeString) {
+            throw new \InvalidArgumentException('At least one parameter must be greater than zero.');
+        }
+        return new \DateInterval('P' . ($dateString ?: null) . ($timeString ? 'T' . $timeString : null));
+    }
+
     private static function getPlural(int $value): ?string
     {
         return 1 !== $value ? 's' : null;

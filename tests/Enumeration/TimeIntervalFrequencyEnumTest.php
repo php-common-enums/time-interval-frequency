@@ -7,6 +7,126 @@ use PHPUnit\Framework\TestCase;
 
 class TimeIntervalFrequencyEnumTest extends TestCase
 {
+    public function testCreateDateInterval(): void
+    {
+        $dateInterval = TimeIntervalFrequencyEnum::createDateInterval(
+            years  : 1,
+            months : 2,
+            days   : 3,
+            hours  : 4,
+            minutes: 5,
+            seconds: 6
+        );
+        self::assertEquals(
+            1,
+            $dateInterval->y
+        );
+        self::assertEquals(
+            2,
+            $dateInterval->m
+        );
+        self::assertEquals(
+            3,
+            $dateInterval->d
+        );
+        self::assertEquals(
+            4,
+            $dateInterval->h
+        );
+        self::assertEquals(
+            5,
+            $dateInterval->i
+        );
+        self::assertEquals(
+            6,
+            $dateInterval->s
+        );
+        $dateInterval = TimeIntervalFrequencyEnum::createDateInterval(
+            years : 1,
+            months: 2,
+            days  : 3
+        );
+        self::assertEquals(
+            1,
+            $dateInterval->y
+        );
+        self::assertEquals(
+            2,
+            $dateInterval->m
+        );
+        self::assertEquals(
+            3,
+            $dateInterval->d
+        );
+        self::assertEquals(
+            0,
+            $dateInterval->h
+        );
+        self::assertEquals(
+            0,
+            $dateInterval->i
+        );
+        self::assertEquals(
+            0,
+            $dateInterval->s
+        );
+        $dateInterval = TimeIntervalFrequencyEnum::createDateInterval(
+            hours  : 4,
+            minutes: 5,
+            seconds: 6
+        );
+        self::assertEquals(
+            0,
+            $dateInterval->y
+        );
+        self::assertEquals(
+            0,
+            $dateInterval->m
+        );
+        self::assertEquals(
+            0,
+            $dateInterval->d
+        );
+        self::assertEquals(
+            4,
+            $dateInterval->h
+        );
+        self::assertEquals(
+            5,
+            $dateInterval->i
+        );
+        self::assertEquals(
+            6,
+            $dateInterval->s
+        );
+        $this->expectException(\InvalidArgumentException::class);
+        $dateInterval = TimeIntervalFrequencyEnum::createDateInterval();
+        self::assertEquals(
+            0,
+            $dateInterval->y
+        );
+        self::assertEquals(
+            0,
+            $dateInterval->m
+        );
+        self::assertEquals(
+            0,
+            $dateInterval->d
+        );
+        self::assertEquals(
+            0,
+            $dateInterval->h
+        );
+        self::assertEquals(
+            0,
+            $dateInterval->i
+        );
+        self::assertEquals(
+            0,
+            $dateInterval->s
+        );
+    }
+
     public function testExpectedDateIntervalTemplate(): void
     {
         self::assertEquals(
