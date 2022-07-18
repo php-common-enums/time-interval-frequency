@@ -12,6 +12,45 @@ enum TimeIntervalFrequencyEnum : string
     case Months = 'm';
     case Years = 'y';
 
+    public static function addMonths(
+        \DateTime|\DateTimeImmutable $dateTime,
+        int $months = 1
+    ): \DateTime|\DateTimeImmutable {
+        for ($i = 0; $i < abs($months); $i++) {
+            $dateTimeOriginal = clone $dateTime;
+            $currentMonth = (int) $dateTime->format('m');
+            $dateTime = $dateTime->add(new \DateInterval('P1M'));
+            $newMonth = (int) $dateTime->format('m');
+            if ($newMonth === $currentMonth + 2) {
+                do {
+                    $dateTime = $dateTime->sub(new \DateInterval('P1D'));
+                } while ((int) $dateTime->format('m') === $currentMonth + 2);
+            }
+            $lastDayOfMonthOriginal = new \DateTime(
+                sprintf(
+                    'last day of %s %d',
+                    $dateTimeOriginal->format('F'),
+                    $dateTimeOriginal->format('Y')
+                ),
+                $dateTimeOriginal->getTimezone()
+            );
+            $lastDayOfMonthNew = new \DateTime(
+                sprintf(
+                    'last day of %s %d',
+                    $dateTime->format('F'),
+                    $dateTime->format('Y')
+                ),
+                $dateTime->getTimezone()
+            );
+            if ($dateTimeOriginal->format('Y-m-d') === $lastDayOfMonthOriginal->format('Y-m-d')) {
+                while ($dateTime->format('Y-m-d') !== $lastDayOfMonthNew->format('Y-m-d')) {
+                    $dateTime = $dateTime->add(new \DateInterval('P1D'));
+                }
+            }
+        }
+        return $dateTime;
+    }
+
     public static function createDateInterval(
         ?int $years = null,
         ?int $months = null,
