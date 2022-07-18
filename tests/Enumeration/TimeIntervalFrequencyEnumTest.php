@@ -7,6 +7,230 @@ use PHPUnit\Framework\TestCase;
 
 class TimeIntervalFrequencyEnumTest extends TestCase
 {
+    public function provideDataAddMonths(): array
+    {
+        return [
+            [
+                new \DateTime(
+                    '2020-02-29',
+                    new \DateTimeZone('America/New_York')
+                ),
+                new \DateTime(
+                    '2020-01-31',
+                    new \DateTimeZone('America/New_York')
+                ),
+            ],
+            [
+                new \DateTime(
+                    '2021-02-28',
+                    new \DateTimeZone('America/New_York')
+                ),
+                new \DateTime(
+                    '2021-01-31',
+                    new \DateTimeZone('America/New_York')
+                ),
+            ],
+            [
+                new \DateTime(
+                    '2021-02-15',
+                    new \DateTimeZone('America/New_York')
+                ),
+                new \DateTime(
+                    '2021-01-15',
+                    new \DateTimeZone('America/New_York')
+                ),
+            ],
+            [
+                new \DateTime(
+                    '2021-03-01',
+                    new \DateTimeZone('America/New_York')
+                ),
+                new \DateTime(
+                    '2021-02-01',
+                    new \DateTimeZone('America/New_York')
+                ),
+            ],
+            [
+                new \DateTime(
+                    '2021-04-30',
+                    new \DateTimeZone('America/New_York')
+                ),
+                new \DateTime(
+                    '2021-03-31',
+                    new \DateTimeZone('America/New_York')
+                ),
+            ],
+            [
+                new \DateTime(
+                    '2021-05-31',
+                    new \DateTimeZone('America/New_York')
+                ),
+                new \DateTime(
+                    '2021-04-30',
+                    new \DateTimeZone('America/New_York')
+                ),
+            ],
+            [
+                new \DateTime(
+                    '2021-05-15',
+                    new \DateTimeZone('America/New_York')
+                ),
+                new \DateTime(
+                    '2021-01-15',
+                    new \DateTimeZone('America/New_York')
+                ),
+                4,
+            ],
+            [
+                new \DateTime(
+                    '2021-03-31',
+                    new \DateTimeZone('America/New_York')
+                ),
+                new \DateTime(
+                    '2021-01-31',
+                    new \DateTimeZone('America/New_York')
+                ),
+                2,
+            ],
+            [
+                new \DateTime(
+                    '2021-09-30',
+                    new \DateTimeZone('America/New_York')
+                ),
+                new \DateTime(
+                    '2021-02-28',
+                    new \DateTimeZone('America/New_York')
+                ),
+                7,
+            ],
+            [
+                new \DateTime(
+                    '2021-09-30',
+                    new \DateTimeZone('America/New_York')
+                ),
+                new \DateTime(
+                    '2021-03-31',
+                    new \DateTimeZone('America/New_York')
+                ),
+                6,
+            ],
+            [
+                new \DateTime(
+                    '2022-01-31',
+                    new \DateTimeZone('America/New_York')
+                ),
+                new \DateTime(
+                    '2021-02-28',
+                    new \DateTimeZone('America/New_York')
+                ),
+                11,
+            ],
+            [
+                new \DateTime(
+                    '2022-01-02',
+                    new \DateTimeZone('America/New_York')
+                ),
+                new \DateTime(
+                    '2021-02-02',
+                    new \DateTimeZone('America/New_York')
+                ),
+                11,
+            ],
+            [
+                new \DateTimeImmutable(
+                    '2020-02-29',
+                    new \DateTimeZone('America/New_York')
+                ),
+                new \DateTimeImmutable(
+                    '2020-01-31',
+                    new \DateTimeZone('America/New_York')
+                ),
+            ],
+            [
+                new \DateTimeImmutable(
+                    '2021-02-28',
+                    new \DateTimeZone('America/New_York')
+                ),
+                new \DateTimeImmutable(
+                    '2021-01-31',
+                    new \DateTimeZone('America/New_York')
+                ),
+            ],
+            [
+                new \DateTimeImmutable(
+                    '2021-02-15',
+                    new \DateTimeZone('America/New_York')
+                ),
+                new \DateTimeImmutable(
+                    '2021-01-15',
+                    new \DateTimeZone('America/New_York')
+                ),
+            ],
+            [
+                new \DateTime(
+                    '2021-03-01',
+                    new \DateTimeZone('America/New_York')
+                ),
+                new \DateTime(
+                    '2021-02-01',
+                    new \DateTimeZone('America/New_York')
+                ),
+            ],
+            [
+                new \DateTimeImmutable(
+                    '2021-04-30',
+                    new \DateTimeZone('America/New_York')
+                ),
+                new \DateTimeImmutable(
+                    '2021-03-31',
+                    new \DateTimeZone('America/New_York')
+                ),
+            ],
+            [
+                new \DateTimeImmutable(
+                    '2021-05-31',
+                    new \DateTimeZone('America/New_York')
+                ),
+                new \DateTimeImmutable(
+                    '2021-04-30',
+                    new \DateTimeZone('America/New_York')
+                ),
+            ],
+            [
+                new \DateTimeImmutable(
+                    '2022-01-31',
+                    new \DateTimeZone('America/New_York')
+                ),
+                new \DateTimeImmutable(
+                    '2021-02-28',
+                    new \DateTimeZone('America/New_York')
+                ),
+                11,
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideDataAddMonths
+     */
+    public function testAddMonths(
+        \DateTime|\DateTimeImmutable $dateTimeExpected,
+        \DateTime|\DateTimeImmutable $dateTime,
+        int $months = 1,
+    ): void {
+        self::assertEquals(
+            $dateTimeExpected,
+            TimeIntervalFrequencyEnum::addMonths(
+                $dateTime,
+                $months
+            )
+        );
+        self::assertEquals(
+            $dateTimeExpected::class,
+            $dateTime::class
+        );
+    }
+
     public function testCreateDateInterval(): void
     {
         $dateInterval = TimeIntervalFrequencyEnum::createDateInterval(
